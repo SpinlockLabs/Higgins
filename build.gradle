@@ -1,0 +1,20 @@
+plugins {
+    id "io.franzbecker.gradle-lombok" version "1.11"
+}
+
+subprojects {
+    apply plugin: 'java'
+
+    group = 'sh.spinlock'
+    version = '0.1.0-SNAPSHOT'
+    sourceCompatibility = 1.8
+
+    lombok {
+        version = '1.16.20'
+        sha256 = ''
+    }
+
+    repositories {
+        mavenCentral()
+    }
+}
