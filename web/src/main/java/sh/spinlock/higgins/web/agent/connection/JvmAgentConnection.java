@@ -1,13 +1,15 @@
 package sh.spinlock.higgins.web.agent.connection;
 
-import sh.spinlock.higgins.agent.HigginsAgent;
+import sh.spinlock.higgins.agent.Agent;
 import sh.spinlock.higgins.agent.connection.JvmHost;
 
 public class JvmAgentConnection extends RemoteAgentConnection {
-    private HigginsAgent agent;
+    private Agent agent;
 
     public JvmAgentConnection() {
-        agent = new HigginsAgent(new JvmHost(this));
+        agent = new Agent();
+        agent.setConnection(new JvmHost(this));
+        Agent.initializeInstance(agent);
     }
 
     @Override
