@@ -4,7 +4,7 @@ import sh.spinlock.higgins.agent.Agent;
 import sh.spinlock.higgins.agent.connection.JvmHost;
 
 public class JvmAgentConnection extends RemoteAgentConnection {
-    private Agent agent;
+    private final Agent agent;
 
     public JvmAgentConnection() {
         agent = new Agent();
@@ -13,12 +13,11 @@ public class JvmAgentConnection extends RemoteAgentConnection {
     }
 
     @Override
-    public void receiveString(String str) {
-        System.out.println("Received from agent: " + str);
+    public void receive(byte[] bytes) {
     }
 
     @Override
-    public void sendString(String str) {
-        agent.getConnection().receiveString(str);
+    public void send(byte[] bytes) {
+        agent.getConnection().receive(bytes);
     }
 }

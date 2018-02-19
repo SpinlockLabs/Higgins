@@ -43,10 +43,7 @@ public class UnixShellTask extends Task {
         try {
             p = pb.start();
             p.waitFor();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return TaskState.FAILURE;
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             return TaskState.FAILURE;
         }

@@ -20,7 +20,7 @@ public class Job {
     @Setter(AccessLevel.PRIVATE)
     private Workspace workspace;
 
-    private List<Task> tasks;
+    private final List<Task> tasks;
 
     public Job() {
         tasks = new ArrayList<>();

@@ -1,14 +1,13 @@
 package sh.spinlock.higgins.agent.job;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
 
 public class Workspace {
-    private Path rootPath;
-    private Path tempDir;
+    private final Path rootPath;
+    private final Path tempDir;
 
     public Workspace(Path rootPath) {
         this.rootPath = rootPath;

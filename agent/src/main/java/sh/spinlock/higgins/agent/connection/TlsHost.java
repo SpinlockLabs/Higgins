@@ -7,12 +7,12 @@ public class TlsHost extends BaseHost {
     }
 
     @Override
-    public void receiveString(String str) {
+    public void receive(byte[] bytes) {
 
     }
 
     @Override
-    public void sendString(String str) {
+    public void send(byte[] bytes) {
 
     }
 }
