@@ -3,7 +3,7 @@
 ## Brief Message Table
 |Index|Direction|Title|Description|
 |---|---|---|---|
-|0|server -> client|ack|Acknowledges specified request id|
+|0|server <-> client|ack|Acknowledges specified request id|
 |1|server -> client|hello|Notifies client upon connect whether or not they need to authenticate.|
 |2|client -> server|auth|Client sends reply to hello message containing password to authenticate.|
 
