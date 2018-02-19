@@ -29,10 +29,11 @@ dependencies {
     runtime('org.postgresql:postgresql')
     compileOnly('org.springframework.boot:spring-boot-configuration-processor')
     compileOnly('org.projectlombok:lombok')
+    compile project(':agent')
+
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('org.springframework.security:spring-security-test')
 
-    compile project(':agent')
 }
 
 dependencyManagement {
