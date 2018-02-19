@@ -1,14 +1,14 @@
 package sh.spinlock.higgins.agent.task;
 
 import lombok.Getter;
-import sh.spinlock.higgins.agent.job.Job;
+import sh.spinlock.higgins.agent.job.RemoteJob;
 
 public abstract class Task {
     @Getter
-    private Job job;
+    private RemoteJob remoteJob;
 
-    public Task(Job job) {
-        this.job = job;
+    public Task(RemoteJob remoteJob) {
+        this.remoteJob = remoteJob;
     }
 
     public abstract boolean isCompatible();

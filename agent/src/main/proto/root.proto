@@ -6,7 +6,7 @@ option java_package = "sh.spinlock.higgins.agent.connection.protocol";
 option java_outer_classname = "ProtocolRootMessage";
 
 message RootMessage {
-    uint32 id = 1;
+    uint64 id = 1;
     uint32 type = 2;
     bytes message = 3;
 }

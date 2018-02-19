@@ -1,6 +1,6 @@
 package sh.spinlock.higgins.agent.task.shell;
 
-import sh.spinlock.higgins.agent.job.Job;
+import sh.spinlock.higgins.agent.job.RemoteJob;
 import sh.spinlock.higgins.agent.task.Task;
 import sh.spinlock.higgins.agent.task.TaskState;
 import sh.spinlock.higgins.util.OSUtil;
@@ -12,8 +12,8 @@ import java.nio.file.Path;
 public class UnixShellTask extends Task {
     private String contents = "echo Test!";
 
-    public UnixShellTask(Job job) {
-        super(job);
+    public UnixShellTask(RemoteJob remoteJob) {
+        super(remoteJob);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class UnixShellTask extends Task {
     public TaskState run() {
         Path tempFile;
         try {
-            tempFile = getJob().getWorkspace().createTempTextFile("sh", contents);
+            tempFile = this.getRemoteJob().getWorkspace().createTempTextFile("sh", contents);
         } catch (IOException e) {
             e.printStackTrace();
             return TaskState.FAILURE;

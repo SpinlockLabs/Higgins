@@ -2,10 +2,10 @@ package sh.spinlock.higgins.agent.connection;
 
 import sh.spinlock.higgins.web.agent.connection.JvmAgentConnection;
 
-public class JvmHost extends BaseHost {
+public class JvmHostConnection extends HostConnection {
     private final JvmAgentConnection agentConnection;
 
-    public JvmHost(JvmAgentConnection agentConnection) {
+    public JvmHostConnection(JvmAgentConnection agentConnection) {
         this.agentConnection = agentConnection;
     }
 

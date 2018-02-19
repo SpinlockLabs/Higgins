@@ -4,11 +4,11 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import lombok.Getter;
 import sh.spinlock.higgins.agent.connection.protocol.ProtocolHandler;
 
-public abstract class BaseHost {
+public abstract class HostConnection {
     @Getter
     private ProtocolHandler protocolHandler;
 
-    public BaseHost() {
+    public HostConnection() {
         protocolHandler = new ProtocolHandler();
     }
 

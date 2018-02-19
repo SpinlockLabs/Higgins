@@ -3,7 +3,7 @@ package sh.spinlock.higgins.agent.job;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import sh.spinlock.higgins.agent.Agent;
+import sh.spinlock.higgins.agent.HigginsAgent;
 import sh.spinlock.higgins.agent.task.Task;
 import sh.spinlock.higgins.agent.task.TaskState;
 
@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Job {
+public class RemoteJob {
     @Getter
     @Setter(AccessLevel.PRIVATE)
     private String name;
@@ -22,7 +22,7 @@ public class Job {
 
     private final List<Task> tasks;
 
-    public Job() {
+    public RemoteJob() {
         tasks = new ArrayList<>();
     }
 
@@ -30,26 +30,25 @@ public class Job {
         tasks.add(task);
     }
 
-    public void run() {
-        System.out.println("Starting Job " + getName());
+    public TaskState run() {
         for (Task task : tasks) {
             TaskState state = task.run();
-            if (state == TaskState.SUCCESS) {
-                System.out.println("Task " + task.getClass().getSimpleName() + ": SUCCESS");
+            if (state == TaskState.FAILURE) {
+                return TaskState.FAILURE;
             }
         }
 
-        System.out.println("Job " + getName() + ": SUCCESS");
+        return TaskState.SUCCESS;
     }
 
-    public static Job createJob(String name) throws IOException {
-        Job job = new Job();
-        job.setName(name);
+    public static RemoteJob createJob(String name) throws IOException {
+        RemoteJob remoteJob = new RemoteJob();
+        remoteJob.setName(name);
 
-        Workspace workspace = new Workspace(Agent.getInstance().getRootDirectory().getWorkspacesDir().resolve(name));
+        Workspace workspace = new Workspace(HigginsAgent.getInstance().getRootDirectory().getWorkspacesDir().resolve(name));
         workspace.initialize();
-        job.setWorkspace(workspace);
+        remoteJob.setWorkspace(workspace);
 
-        return job;
+        return remoteJob;
     }
 }

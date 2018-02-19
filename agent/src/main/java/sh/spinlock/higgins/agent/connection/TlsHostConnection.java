@@ -1,6 +1,6 @@
 package sh.spinlock.higgins.agent.connection;
 
-public class TlsHost extends BaseHost {
+public class TlsHostConnection extends HostConnection {
     @Override
     public boolean connect() {
         return true;

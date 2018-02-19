@@ -2,24 +2,24 @@ package sh.spinlock.higgins.agent;
 
 import lombok.Getter;
 import lombok.Setter;
-import sh.spinlock.higgins.agent.connection.BaseHost;
+import sh.spinlock.higgins.agent.connection.HostConnection;
 import sh.spinlock.higgins.agent.file.RootDirectory;
 
 import java.io.IOException;
 
-public class Agent {
+public class HigginsAgent {
     @Getter
-    private static Agent instance;
+    private static HigginsAgent instance;
 
     @Getter
     @Setter
-    private BaseHost connection;
+    private HostConnection connection;
 
     @Getter
     private RootDirectory rootDirectory;
 
-    public void initialize() {
-        rootDirectory = new RootDirectory("higgins/");
+    private void initialize() {
+        rootDirectory = new RootDirectory("higgins-agent/");
         try {
             rootDirectory.initialize();
         } catch (IOException e) {
@@ -33,7 +33,7 @@ public class Agent {
         connection.connect();
     }
 
-    public static void initializeInstance(Agent agent) {
+    public static void initializeInstance(HigginsAgent agent) {
         instance = agent;
         instance.initialize();
     }
