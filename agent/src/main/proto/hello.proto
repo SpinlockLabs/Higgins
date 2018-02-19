@@ -3,10 +3,9 @@ syntax = "proto3";
 package sh.spinlock.higgins.agent.connection.protocol;
 
 option java_package = "sh.spinlock.higgins.agent.connection.protocol";
-option java_outer_classname = "ProtocolRootMessage";
+option java_outer_classname = "ProtocolHelloMessage";
 
-message RootMessage {
-    uint32 id = 1;
-    uint32 type = 2;
-    bytes message = 3;
+message HelloMessage {
+    bool needs_auth = 1;
+    uint32 protocol_version = 2;
 }

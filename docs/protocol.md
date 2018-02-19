@@ -42,8 +42,8 @@ the server is using, and if they are different, the agent should disconnect.
 
 ```proto
 message HelloMessage {
-    bool needs_auth;
-    uint32 protocol_version;
+    bool needs_auth = 1;
+    uint32 protocol_version = 2;
 }
 ```
 
@@ -54,7 +54,7 @@ connection information in future protocol versions.
 
 ```proto
 message AuthMessage {
-    string password;
+    string password = 1;
 }
 ```
 
@@ -69,7 +69,7 @@ be differences between data on different systems.
 
 ```proto
 message AgentInfoMessage {
-    string json; // See warning above
+    string json = 1; // See warning above
 }
 ```
 
