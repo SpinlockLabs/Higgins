@@ -14,7 +14,7 @@ bytes to deserialize a message that is defined elsewhere.
 
 ```proto
 message RootMessage {
-    uint32 rid = 1;
+    uint64 rid = 1;
     uint32 type = 2;
     bytes message = 3;
 }
@@ -32,6 +32,7 @@ message AckMessage {
 ```proto
 message HelloMessage {
     bool needsAuth;
+    uint32 protocolVersion;
 }
 ```
 
