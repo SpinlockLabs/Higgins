@@ -2,12 +2,16 @@ package sh.spinlock.higgins.agent;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import sh.spinlock.higgins.agent.connection.HostConnection;
 import sh.spinlock.higgins.agent.file.RootDirectory;
 
 import java.io.IOException;
 
 public class HigginsAgent {
+    private static final Logger LOG = LogManager.getLogger();
+
     @Getter
     private static HigginsAgent instance;
 
@@ -18,27 +22,24 @@ public class HigginsAgent {
     @Getter
     private RootDirectory rootDirectory;
 
-    private void initialize() {
+    public void start() {
         rootDirectory = new RootDirectory("higgins-agent/");
+
         try {
             rootDirectory.initialize();
         } catch (IOException e) {
-            System.err.println("Initializing root directory failed.");
-            e.printStackTrace();
-            System.exit(1);
+            LOG.error("Could not initialize root directory.", e);
+            return;
         }
-    }
 
-    public void start() {
         try {
             connection.connect();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error("Could not connect to host.", e);
         }
     }
 
     public static void initializeInstance(HigginsAgent agent) {
         instance = agent;
-        instance.initialize();
     }
 }

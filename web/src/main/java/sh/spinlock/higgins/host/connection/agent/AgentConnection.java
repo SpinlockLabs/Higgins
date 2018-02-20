@@ -6,8 +6,11 @@ import sh.spinlock.higgins.host.agent.Agent;
 
 public abstract class AgentConnection {
     @Getter
-    @Setter
     private Agent agent;
+
+    public AgentConnection(Agent agent) {
+        this.agent = agent;
+    }
 
     public abstract void send(byte[] bytes);
     public void receive(byte[] bytes) {}

@@ -12,6 +12,10 @@ plugins {
     id 'io.franzbecker.gradle-lombok' version '1.11'
 }
 
+ext {
+    log4jversion = '2.10.0'
+}
+
 subprojects {
     apply plugin: 'java'
 
@@ -29,6 +33,9 @@ subprojects {
     }
 
     dependencies {
+        compile('org.apache.logging.log4j:log4j-api:2.10.0')
+        compile('org.apache.logging.log4j:log4j-core:2.10.0')
+
         compile('org.projectlombok:lombok:1.16.20')
     }
 }

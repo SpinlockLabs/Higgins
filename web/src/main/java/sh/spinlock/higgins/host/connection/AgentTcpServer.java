@@ -1,49 +1,66 @@
 package sh.spinlock.higgins.host.connection;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import sh.spinlock.higgins.host.HigginsHost;
 import sh.spinlock.higgins.host.agent.Agent;
-import sh.spinlock.higgins.host.connection.agent.SocketConnection;
+import sh.spinlock.higgins.host.connection.agent.SocketAgentConnection;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class AgentTcpServer {
-    private ServerSocket serverSocket;
-    private ServerThread serverThread;
+    private static final Logger LOG = LogManager.getLogger(AgentTcpServer.class);
 
-    public AgentTcpServer() {
-        serverThread = new ServerThread();
+    private final int port;
+    private ServerSocket serverSocket;
+    private Thread serverThread;
+
+    public AgentTcpServer(int port) {
+        this.port = port;
+        serverThread = new Thread(new ServerThread(), "TCP Server");
     }
 
     public void start() throws IOException {
-        serverSocket = new ServerSocket(6081);
+        LOG.info("Starting Agent TCP Server on port {}", port);
+        serverSocket = new ServerSocket(port);
         serverThread.start();
     }
 
     public void stop() {
+        LOG.info("Stopping Agent TCP Server");
         try {
             serverThread.join();
             serverSocket.close();
         } catch (InterruptedException | IOException e) {
-            e.printStackTrace();
+            LOG.error("Failed to properly stop Agent TCP Server", e);
         }
     }
 
-    // TODO: Replace with Runnable
-    private class ServerThread extends Thread {
-        @Override
+    private class ServerThread implements Runnable {
         public void run() {
-            while (!isInterrupted()) {
+            while (!serverSocket.isClosed()) {
                 try {
                     Socket socket = serverSocket.accept();
 
-                    if (socket != null) {
-                        SocketConnection socketConnection = new SocketConnection();
-                        socketConnection.setSocket(socket);
-                        Agent agent = new Agent(socketConnection);
-                        HigginsHost.getInstance().getAgentManager().addAgent(agent);
-                    }
+                    String host = socket.getInetAddress().getCanonicalHostName();
+                    int port = socket.getPort();
+                    String hostPort = String.format("%s:%s", host, port);
+
+                    LOG.info("Accepting new Agent connection ({})", hostPort);
+
+                    // Initialize new Agent and set temporary name
+                    Agent agent = new Agent();
+                    agent.setName(hostPort);
+
+                    // Set up Connection, and register with Agent
+                    SocketAgentConnection connection = new SocketAgentConnection(agent);
+                    agent.setConnection(connection);
+                    connection.setSocket(socket);
+
+                    // Register Agent
+                    HigginsHost.getInstance().getAgentManager().addAgent(agent);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

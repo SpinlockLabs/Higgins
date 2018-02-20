@@ -2,14 +2,16 @@ package sh.spinlock.higgins.host.connection.agent;
 
 import sh.spinlock.higgins.agent.HigginsAgent;
 import sh.spinlock.higgins.agent.connection.JvmHostConnection;
+import sh.spinlock.higgins.host.agent.Agent;
 
 public class JvmAgentConnection extends AgentConnection {
-    private final HigginsAgent agent;
+    private final HigginsAgent virtualAgent;
 
-    public JvmAgentConnection() {
-        agent = new HigginsAgent();
-        agent.setConnection(new JvmHostConnection(this));
-        HigginsAgent.initializeInstance(agent);
+    public JvmAgentConnection(Agent agent) {
+        super(agent);
+        virtualAgent = new HigginsAgent();
+        virtualAgent.setConnection(new JvmHostConnection(this));
+        HigginsAgent.initializeInstance(virtualAgent);
     }
 
     @Override
@@ -18,6 +20,6 @@ public class JvmAgentConnection extends AgentConnection {
 
     @Override
     public void send(byte[] bytes) {
-        agent.getConnection().receive(bytes);
+        virtualAgent.getConnection().receive(bytes);
     }
 }

@@ -16,7 +16,8 @@ public final class HigginsHost {
 
     public HigginsHost() {
         agentManager = new AgentManager();
-        agentTcpServer = new AgentTcpServer();
+        // TODO: Configurable agent port
+        agentTcpServer = new AgentTcpServer(6081);
     }
 
     public void start() throws Exception {
@@ -24,7 +25,7 @@ public final class HigginsHost {
     }
 
     public void shutdown() {
-        agentManager.closeAll();
+        agentManager.disconnectAll();
         agentTcpServer.stop();
     }
 

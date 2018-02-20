@@ -1,17 +1,22 @@
 package sh.spinlock.higgins.host.connection.agent;
 
 import sh.spinlock.higgins.host.HigginsHost;
+import sh.spinlock.higgins.host.agent.Agent;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-public class SocketConnection extends AgentConnection {
+public class SocketAgentConnection extends AgentConnection {
     private Socket socket;
     private SocketThread socketThread;
     private DataInputStream inputStream;
     private DataOutputStream outputStream;
+
+    public SocketAgentConnection(Agent agent) {
+        super(agent);
+    }
 
     public void setSocket(Socket socket) throws IOException {
         this.socket = socket;
@@ -21,7 +26,6 @@ public class SocketConnection extends AgentConnection {
         socketThread.start();
 
         ready();
-
     }
 
     @Override
@@ -48,6 +52,7 @@ public class SocketConnection extends AgentConnection {
     }
 
     // TODO: Replace with Runnable
+    // TODO: Name Thread
     private class SocketThread extends Thread {
         @Override
         public void run() {

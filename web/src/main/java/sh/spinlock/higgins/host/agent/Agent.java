@@ -13,15 +13,10 @@ public class Agent {
     private String name;
 
     @Getter
+    @Setter
     private AgentConnection connection;
 
     private boolean ready;
-
-    public Agent(AgentConnection connection)
-    {
-        this.connection = connection;
-        connection.setAgent(this);
-    }
 
     public void disconnect() {
         getConnection().close();
