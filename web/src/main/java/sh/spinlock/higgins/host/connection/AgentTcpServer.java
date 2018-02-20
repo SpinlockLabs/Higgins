@@ -9,7 +9,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class AgentTcpServer {
-
     private ServerSocket serverSocket;
     private ServerThread serverThread;
 
@@ -22,8 +21,13 @@ public class AgentTcpServer {
         serverThread.start();
     }
 
-    public void stop() throws InterruptedException, IOException {
-        // TODO
+    public void stop() {
+        try {
+            serverThread.join();
+            serverSocket.close();
+        } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // TODO: Replace with Runnable

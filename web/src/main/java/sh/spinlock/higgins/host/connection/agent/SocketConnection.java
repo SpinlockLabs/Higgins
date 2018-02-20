@@ -1,8 +1,5 @@
 package sh.spinlock.higgins.host.connection.agent;
 
-import sh.spinlock.higgins.agent.connection.protocol.ProtocolConstants;
-import sh.spinlock.higgins.agent.connection.protocol.ProtocolMessages;
-import sh.spinlock.higgins.agent.connection.protocol.ProtocolRootMessage;
 import sh.spinlock.higgins.host.HigginsHost;
 
 import java.io.DataInputStream;
@@ -23,17 +20,8 @@ public class SocketConnection extends AgentConnection {
         outputStream = new DataOutputStream(socket.getOutputStream());
         socketThread.start();
 
-        ProtocolMessages.HelloMessage.Builder helloMessage = ProtocolMessages.HelloMessage.newBuilder();
-        helloMessage.setNeedsAuth(true);
-        helloMessage.setProtocolVersion(ProtocolConstants.VERSION);
+        ready();
 
-        ProtocolRootMessage.RootMessage.Builder rootMessage = ProtocolRootMessage.RootMessage.newBuilder();
-        rootMessage.setId(1);
-        rootMessage.setType(1);
-        rootMessage.setMessage(helloMessage.build().toByteString());
-
-        byte[] messageBytes = rootMessage.build().toByteArray();
-        send(messageBytes);
     }
 
     @Override
@@ -55,7 +43,6 @@ public class SocketConnection extends AgentConnection {
             socket.close();
             HigginsHost.getInstance().getAgentManager().removeAgent(getAgent());
         } catch (InterruptedException | IOException e) {
-            // TODO
             e.printStackTrace();
         }
     }

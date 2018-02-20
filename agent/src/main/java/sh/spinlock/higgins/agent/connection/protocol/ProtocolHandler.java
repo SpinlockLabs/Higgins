@@ -9,10 +9,9 @@ import static sh.spinlock.higgins.agent.connection.protocol.ProtocolConstants.Me
 public class ProtocolHandler {
     public ProtocolHandler() {}
 
-    public final void handleIncoming(byte[] bytes) throws InvalidProtocolBufferException {
-        RootMessage rootMessage = RootMessage.parseFrom(bytes);
-
+    public final void handleIncoming(byte[] bytes) {
         try {
+            RootMessage rootMessage = RootMessage.parseFrom(bytes);
             handleRootMessage(rootMessage);
         } catch (InvalidProtocolBufferException e) {
             System.err.println("Could not parse protobuf message");
@@ -38,6 +37,7 @@ public class ProtocolHandler {
     }
 
     private void handleAck(RootMessage rootMessage) throws InvalidProtocolBufferException {
+        AckMessage message = AckMessage.parseFrom(rootMessage.getMessage());
     }
 
     private void handleHello(RootMessage rootMessage) throws InvalidProtocolBufferException {

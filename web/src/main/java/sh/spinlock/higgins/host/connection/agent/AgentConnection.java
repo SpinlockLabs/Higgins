@@ -10,10 +10,15 @@ public abstract class AgentConnection {
     private Agent agent;
 
     public abstract void send(byte[] bytes);
+    public void receive(byte[] bytes) {}
+    public void close() {}
 
-    public void receive(byte[] bytes) {
-    }
-
-    public void close() {
+    /**
+     * Run once the socket/communication layer is
+     * ready to send/receive data.
+     */
+    @SuppressWarnings("WeakerAccess")
+    protected final void ready() {
+        getAgent().setReady();
     }
 }

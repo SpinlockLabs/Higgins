@@ -18,14 +18,13 @@ public class SocketHostConnection extends HostConnection {
         inputStream = new DataInputStream(socket.getInputStream());
         outputStream = new DataOutputStream(socket.getOutputStream());
         socketThread.start();
-
-
     }
 
     @Override
     public void send(byte[] bytes) {
         try {
             outputStream.writeInt(bytes.length);
+            outputStream.write(bytes);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -34,8 +33,11 @@ public class SocketHostConnection extends HostConnection {
     @Override
     public void close() {
         try {
+            if (Thread.currentThread() != socketThread) {
+                socketThread.join();
+            }
             socket.close();
-        } catch (IOException e) {
+        } catch (InterruptedException | IOException e) {
             e.printStackTrace();
         }
     }

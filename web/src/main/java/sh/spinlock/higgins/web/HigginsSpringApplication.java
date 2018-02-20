@@ -3,24 +3,21 @@ package sh.spinlock.higgins.web;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import sh.spinlock.higgins.host.HigginsHost;
-import sh.spinlock.higgins.host.connection.AgentTcpServer;
-
-import java.io.IOException;
 
 @SpringBootApplication
-public class HigginsApplication {
+public class HigginsSpringApplication {
     public static void main(String[] args) {
-
         HigginsHost host = new HigginsHost();
         HigginsHost.initializeInstance(host);
 
         try {
-            AgentTcpServer server = new AgentTcpServer();
-            server.start();
-        } catch (IOException e) {
+            HigginsHost.getInstance().start();
+        } catch (Exception e) {
+            System.err.println("Could not start Higgins server!");
             e.printStackTrace();
+            System.exit(1);
         }
 
-        //SpringApplication.run(HigginsApplication.class, args);
+        SpringApplication.run(HigginsSpringApplication.class, args);
     }
 }

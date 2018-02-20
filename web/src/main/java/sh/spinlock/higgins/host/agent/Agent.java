@@ -2,6 +2,9 @@ package sh.spinlock.higgins.host.agent;
 
 import lombok.Getter;
 import lombok.Setter;
+import sh.spinlock.higgins.agent.connection.protocol.ProtocolConstants;
+import sh.spinlock.higgins.agent.connection.protocol.ProtocolMessages.HelloMessage;
+import sh.spinlock.higgins.agent.connection.protocol.ProtocolRootMessage.RootMessage;
 import sh.spinlock.higgins.host.connection.agent.AgentConnection;
 
 public class Agent {
@@ -12,9 +15,27 @@ public class Agent {
     @Getter
     private AgentConnection connection;
 
+    private boolean ready;
+
     public Agent(AgentConnection connection)
     {
         this.connection = connection;
         connection.setAgent(this);
+    }
+
+    public void setReady() {
+        if (ready) return;
+        ready = true;
+
+        HelloMessage.Builder helloMessage = HelloMessage.newBuilder();
+        helloMessage.setNeedsAuth(true);
+        helloMessage.setProtocolVersion(ProtocolConstants.VERSION);
+
+        RootMessage.Builder rootMessage = RootMessage.newBuilder();
+        rootMessage.setId(1);
+        rootMessage.setType(1);
+        rootMessage.setMessage(helloMessage.build().toByteString());
+
+        getConnection().send(rootMessage.build().toByteArray());
     }
 }
