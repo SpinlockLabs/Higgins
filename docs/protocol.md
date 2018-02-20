@@ -49,12 +49,15 @@ message HelloMessage {
 
 ### auth
 The agent sends this in response to the initial hello message.
-It contains the password, and is reserved for other vital
-connection information in future protocol versions.
+It contains the password (if none is needed, the value will be ignored),
+as well as a UUID that the server will use to identify the agent. The
+UUID is stored with two int64 fields (uuid_least and uuid_most).
 
 ```proto
 message AuthMessage {
     string password = 1;
+    int64 uuid_least = 2; // UUID Least Significant Bits
+    int64 uuid_most = 3; // UUID Most Significant Bits
 }
 ```
 
