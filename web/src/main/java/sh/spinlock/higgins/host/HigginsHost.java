@@ -24,6 +24,7 @@ public final class HigginsHost {
     }
 
     public void shutdown() {
+        agentManager.closeAll();
         agentTcpServer.stop();
     }
 

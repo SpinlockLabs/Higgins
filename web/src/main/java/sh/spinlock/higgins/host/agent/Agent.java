@@ -23,6 +23,10 @@ public class Agent {
         connection.setAgent(this);
     }
 
+    public void disconnect() {
+        getConnection().close();
+    }
+
     public void setReady() {
         if (ready) return;
         ready = true;

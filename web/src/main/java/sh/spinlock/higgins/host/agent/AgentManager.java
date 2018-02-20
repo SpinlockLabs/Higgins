@@ -28,4 +28,12 @@ public final class AgentManager {
             return Collections.unmodifiableList(agents);
         }
     }
+
+    public void closeAll() {
+        synchronized (agents) {
+            for (Agent agent : agents) {
+                agent.disconnect();
+            }
+        }
+    }
 }
