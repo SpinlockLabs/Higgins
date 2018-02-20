@@ -29,8 +29,12 @@ public class HigginsAgent {
         }
     }
 
-    public void connect() {
-        connection.connect();
+    public void start() {
+        try {
+            connection.connect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void initializeInstance(HigginsAgent agent) {

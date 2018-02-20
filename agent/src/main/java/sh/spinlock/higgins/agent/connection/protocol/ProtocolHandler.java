@@ -2,6 +2,7 @@ package sh.spinlock.higgins.agent.connection.protocol;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import sh.spinlock.higgins.agent.connection.protocol.ProtocolRootMessage.RootMessage;
+import sh.spinlock.higgins.agent.connection.protocol.ProtocolMessages.*;
 
 import static sh.spinlock.higgins.agent.connection.protocol.ProtocolConstants.MessageIndex.*;
 
@@ -11,6 +12,15 @@ public class ProtocolHandler {
     public final void handleIncoming(byte[] bytes) throws InvalidProtocolBufferException {
         RootMessage rootMessage = RootMessage.parseFrom(bytes);
 
+        try {
+            handleRootMessage(rootMessage);
+        } catch (InvalidProtocolBufferException e) {
+            System.err.println("Could not parse protobuf message");
+            e.printStackTrace();
+        }
+    }
+
+    private void handleRootMessage(RootMessage rootMessage)  throws InvalidProtocolBufferException {
         switch (rootMessage.getType()) {
             case ACK:
                 handleAck(rootMessage);
@@ -27,9 +37,14 @@ public class ProtocolHandler {
         }
     }
 
-    private void handleAck(RootMessage rootMessage) {
+    private void handleAck(RootMessage rootMessage) throws InvalidProtocolBufferException {
     }
 
-    private void handleHello(RootMessage rootMessage) {
+    private void handleHello(RootMessage rootMessage) throws InvalidProtocolBufferException {
+        HelloMessage message = HelloMessage.parseFrom(rootMessage.getMessage());
+
+        System.out.println("Server sent Hello!");
+        System.out.println("Needs Auth: " + message.getNeedsAuth());
+        System.out.println("Protocol Version: " + message.getProtocolVersion());
     }
 }

@@ -1,6 +1,6 @@
 package sh.spinlock.higgins.agent.connection;
 
-import sh.spinlock.higgins.web.agent.connection.JvmAgentConnection;
+import sh.spinlock.higgins.host.connection.agent.JvmAgentConnection;
 
 public class JvmHostConnection extends HostConnection {
     private final JvmAgentConnection agentConnection;
@@ -10,8 +10,7 @@ public class JvmHostConnection extends HostConnection {
     }
 
     @Override
-    public boolean connect() {
-        return true;
+    public void connect() {
     }
 
     @Override
