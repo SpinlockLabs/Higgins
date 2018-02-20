@@ -9,6 +9,7 @@ import sh.spinlock.higgins.host.connection.agent.SocketAgentConnection;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class AgentTcpServer {
     private static final Logger LOG = LogManager.getLogger(AgentTcpServer.class);
@@ -31,8 +32,8 @@ public class AgentTcpServer {
     public void stop() {
         LOG.info("Stopping Agent TCP Server");
         try {
-            serverThread.join();
             serverSocket.close();
+            serverThread.join();
         } catch (InterruptedException | IOException e) {
             LOG.error("Failed to properly stop Agent TCP Server", e);
         }
@@ -61,8 +62,10 @@ public class AgentTcpServer {
 
                     // Register Agent
                     HigginsHost.getInstance().getAgentManager().addAgent(agent);
+                } catch (SocketException e) {
+                    LOG.warn("Socket closed");
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOG.error(e);
                 }
             }
         }

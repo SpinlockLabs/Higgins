@@ -11,7 +11,7 @@ public class HigginsSpringApplication {
     private static final Logger LOG = LogManager.getLogger(HigginsSpringApplication.class);
 
     public static void main(String[] args) {
-        LOG.info("Starting Higgins CI Server");
+        LOG.info("Starting Higgins Web Application Server");
 
         HigginsHost host = new HigginsHost();
         HigginsHost.initializeInstance(host);
