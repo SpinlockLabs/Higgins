@@ -1,14 +1,19 @@
 package sh.spinlock.higgins.web;
 
+import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import sh.spinlock.higgins.host.HigginsHost;
 
 @SpringBootApplication
 public class HigginsSpringApplication {
     private static final Logger LOG = LogManager.getLogger(HigginsSpringApplication.class);
+
+    @Getter
+    private static ConfigurableApplicationContext context;
 
     public static void main(String[] args) {
         LOG.info("Starting Higgins Web Application Server");
@@ -23,6 +28,6 @@ public class HigginsSpringApplication {
             System.exit(1);
         }
 
-        SpringApplication.run(HigginsSpringApplication.class, args);
+        context = SpringApplication.run(HigginsSpringApplication.class, args);
     }
 }
