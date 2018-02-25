@@ -1,3 +1,7 @@
+apply plugin: 'application'
+
+mainClassName = 'sh.spinlock.higgins.agent.Main'
+
 dependencies {
     compile project(':common')
 }

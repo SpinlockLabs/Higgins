@@ -10,8 +10,11 @@ buildscript {
     }
 }
 
+apply plugin: 'application'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+
+mainClassName = 'sh.spinlock.higgins.web.HigginsSpringApplication'
 
 dependencies {
     //compile('org.springframework.boot:spring-boot-starter-security')
