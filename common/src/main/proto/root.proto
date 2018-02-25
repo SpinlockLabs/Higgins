@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package sh.spinlock.higgins.agent.connection.protocol;
 
-option java_package = "sh.spinlock.higgins.agent.connection.protocol";
+option java_package = "sh.spinlock.higgins.connection.protocol";
 option java_outer_classname = "ProtocolRootMessage";
 
 message RootMessage {

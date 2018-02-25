@@ -1,15 +1,26 @@
 package sh.spinlock.higgins.agent.connection.protocol;
 
 import com.google.protobuf.InvalidProtocolBufferException;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sh.spinlock.higgins.agent.connection.protocol.ProtocolRootMessage.RootMessage;
-import sh.spinlock.higgins.agent.connection.protocol.ProtocolMessages.*;
+import sh.spinlock.higgins.agent.HigginsAgent;
+import sh.spinlock.higgins.agent.connection.HostConnection;
+import sh.spinlock.higgins.connection.protocol.MessageBuilder;
+import sh.spinlock.higgins.connection.protocol.ProtocolRootMessage.RootMessage;
+import sh.spinlock.higgins.connection.protocol.ProtocolMessages.*;
 
 import static sh.spinlock.higgins.agent.connection.protocol.ProtocolConstants.MessageIndex.*;
 
 public class ProtocolHandler {
     private static final Logger LOG = LogManager.getLogger(ProtocolHandler.class);
+
+    @Getter
+    @Setter
+    private HostConnection connection;
+
+    private long id;
 
     public ProtocolHandler() {}
 
@@ -18,7 +29,7 @@ public class ProtocolHandler {
             RootMessage rootMessage = RootMessage.parseFrom(bytes);
 
             if (LOG.isDebugEnabled()) {
-                LOG.debug("RootMessage(id={},type={})", rootMessage.getId(), rootMessage.getMessage());
+                LOG.debug("RootMessage(id={},type={})", rootMessage.getId(), rootMessage.getType());
             }
 
             handleRootMessage(rootMessage);
@@ -59,5 +70,19 @@ public class ProtocolHandler {
                     message.getNeedsAuth(),
                     message.getProtocolVersion());
         }
+
+        AuthMessage.Builder authMessage = AuthMessage.newBuilder();
+        authMessage.setPassword("somePassword"); // TODO
+        authMessage.setUuidLeast(0); // TODO
+        authMessage.setUuidMost(0); // TODO
+
+        RootMessage replyMessage = MessageBuilder.buildRootMessage(nextId(),
+                ProtocolConstants.MessageIndex.AUTH,
+                authMessage.build().toByteArray());
+        getConnection().send(replyMessage.toByteArray());
+    }
+
+    private long nextId() {
+        return id++;
     }
 }

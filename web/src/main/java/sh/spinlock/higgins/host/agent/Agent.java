@@ -3,8 +3,8 @@ package sh.spinlock.higgins.host.agent;
 import lombok.Getter;
 import lombok.Setter;
 import sh.spinlock.higgins.agent.connection.protocol.ProtocolConstants;
-import sh.spinlock.higgins.agent.connection.protocol.ProtocolMessages.HelloMessage;
-import sh.spinlock.higgins.agent.connection.protocol.ProtocolRootMessage.RootMessage;
+import sh.spinlock.higgins.connection.protocol.ProtocolMessages.HelloMessage;
+import sh.spinlock.higgins.connection.protocol.ProtocolRootMessage.RootMessage;
 import sh.spinlock.higgins.host.connection.agent.AgentConnection;
 
 public class Agent {

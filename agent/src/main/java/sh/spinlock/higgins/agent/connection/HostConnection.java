@@ -15,6 +15,7 @@ public abstract class HostConnection {
 
     public HostConnection() {
         protocolHandler = new ProtocolHandler();
+        protocolHandler.setConnection(this);
     }
 
     public void connect() throws IOException {}

@@ -19,6 +19,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     //compile('org.springframework.session:spring-session')
 
+    compile project(':common')
     compile project(':agent')
 
     testCompile('org.springframework.boot:spring-boot-starter-test')

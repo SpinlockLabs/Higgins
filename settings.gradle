@@ -1,2 +1,2 @@
 rootProject.name = 'higgins'
-include 'web', 'agent'
+include 'web', 'agent', 'common'
