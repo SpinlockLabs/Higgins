@@ -2,10 +2,14 @@ package sh.spinlock.higgins.host.connection;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import sh.spinlock.higgins.host.agent.Agent;
 import sh.spinlock.higgins.host.connection.protocol.ProtocolHandler;
 
 public abstract class AgentConnection {
+    private static final Logger LOG = LogManager.getLogger(AgentConnection.class);
+
     @Getter
     private final Agent agent;
 
@@ -18,9 +22,16 @@ public abstract class AgentConnection {
         protocolHandler.setConnection(this);
     }
 
-    public abstract void send(byte[] bytes);
+    public void send(byte[] bytes) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Sending {} bytes: {}", bytes.length, bytes);
+        }
+    }
 
     public void receive(byte[] bytes) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Received {} bytes: {}", bytes.length, bytes);
+        }
         protocolHandler.handleIncoming(bytes);
     }
 

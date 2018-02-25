@@ -34,6 +34,7 @@ public class SocketAgentConnection extends AgentConnection {
 
     @Override
     public void send(byte[] bytes) {
+        super.send(bytes);
         try {
             outputStream.writeInt(bytes.length);
             outputStream.write(bytes);

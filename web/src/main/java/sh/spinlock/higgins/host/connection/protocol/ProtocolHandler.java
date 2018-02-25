@@ -48,6 +48,9 @@ public class ProtocolHandler {
             case AUTH:
                 handleAuth(rootMessage);
                 break;
+            case AGENT_INFO:
+                handleAgentInfo(rootMessage);
+                break;
             default:
                 LOG.error("Host received unknown message type (id={}).", rootMessage.getType());
                 // TODO
@@ -71,5 +74,10 @@ public class ProtocolHandler {
         getConnection().send(ackMessageRoot.toByteArray());
     }
 
+    private void handleAgentInfo(RootMessage rootMessage) throws InvalidProtocolBufferException {
+        AgentInfoMessage infoMessage = AgentInfoMessage.parseFrom(rootMessage.getMessage());
+
+        LOG.debug("AgentInfoMessage(json={})", infoMessage.getJson());
+    }
 }
 

@@ -15,11 +15,8 @@ public class JvmAgentConnection extends AgentConnection {
     }
 
     @Override
-    public void receive(byte[] bytes) {
-    }
-
-    @Override
     public void send(byte[] bytes) {
+        super.send(bytes);
         virtualAgent.getConnection().receive(bytes);
     }
 }

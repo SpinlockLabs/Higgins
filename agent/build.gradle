@@ -3,5 +3,8 @@ apply plugin: 'application'
 mainClassName = 'sh.spinlock.higgins.agent.Main'
 
 dependencies {
+    compile('com.fasterxml.jackson.core:jackson-core:2.8.10')
+    compile('com.fasterxml.jackson.core:jackson-databind:2.8.10')
+
     compile project(':common')
 }
