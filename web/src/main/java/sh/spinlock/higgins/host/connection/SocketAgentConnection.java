@@ -1,5 +1,7 @@
-package sh.spinlock.higgins.host.connection.agent;
+package sh.spinlock.higgins.host.connection;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import sh.spinlock.higgins.host.HigginsHost;
 import sh.spinlock.higgins.host.agent.Agent;
 
@@ -9,6 +11,8 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class SocketAgentConnection extends AgentConnection {
+    private static final Logger LOG = LogManager.getLogger(SocketAgentConnection.class);
+
     private Socket socket;
     private SocketThread socketThread;
     private DataInputStream inputStream;
@@ -34,7 +38,7 @@ public class SocketAgentConnection extends AgentConnection {
             outputStream.writeInt(bytes.length);
             outputStream.write(bytes);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error("Socket IOException", e);
         }
     }
 
@@ -47,7 +51,7 @@ public class SocketAgentConnection extends AgentConnection {
             socket.close();
             HigginsHost.getInstance().getAgentManager().removeAgent(getAgent());
         } catch (InterruptedException | IOException e) {
-            e.printStackTrace();
+            LOG.error("Could not properly close socket");
         }
     }
 

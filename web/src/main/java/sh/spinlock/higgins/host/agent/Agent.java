@@ -5,7 +5,7 @@ import lombok.Setter;
 import sh.spinlock.higgins.agent.connection.protocol.ProtocolConstants;
 import sh.spinlock.higgins.connection.protocol.ProtocolMessages.HelloMessage;
 import sh.spinlock.higgins.connection.protocol.ProtocolRootMessage.RootMessage;
-import sh.spinlock.higgins.host.connection.agent.AgentConnection;
+import sh.spinlock.higgins.host.connection.AgentConnection;
 
 public class Agent {
     @Getter

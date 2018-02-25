@@ -1,4 +1,4 @@
-package sh.spinlock.higgins.host.connection.agent;
+package sh.spinlock.higgins.host.connection;
 
 import sh.spinlock.higgins.agent.HigginsAgent;
 import sh.spinlock.higgins.agent.connection.JvmHostConnection;

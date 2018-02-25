@@ -5,11 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sh.spinlock.higgins.agent.HigginsAgent;
 import sh.spinlock.higgins.agent.connection.HostConnection;
 import sh.spinlock.higgins.connection.protocol.MessageBuilder;
 import sh.spinlock.higgins.connection.protocol.ProtocolRootMessage.RootMessage;
 import sh.spinlock.higgins.connection.protocol.ProtocolMessages.*;
+import sh.spinlock.higgins.util.MessageId;
 
 import static sh.spinlock.higgins.agent.connection.protocol.ProtocolConstants.MessageIndex.*;
 
@@ -20,9 +20,12 @@ public class ProtocolHandler {
     @Setter
     private HostConnection connection;
 
-    private long id;
+    @Getter
+    private MessageId id;
 
-    public ProtocolHandler() {}
+    public ProtocolHandler() {
+        id = new MessageId();
+    }
 
     public final void handleIncoming(byte[] bytes) {
         try {
@@ -76,13 +79,9 @@ public class ProtocolHandler {
         authMessage.setUuidLeast(0); // TODO
         authMessage.setUuidMost(0); // TODO
 
-        RootMessage replyMessage = MessageBuilder.buildRootMessage(nextId(),
+        RootMessage replyMessage = MessageBuilder.buildRootMessage(id.increment(),
                 ProtocolConstants.MessageIndex.AUTH,
                 authMessage.build().toByteArray());
         getConnection().send(replyMessage.toByteArray());
-    }
-
-    private long nextId() {
-        return id++;
     }
 }

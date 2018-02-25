@@ -1,6 +1,6 @@
 package sh.spinlock.higgins.agent.connection;
 
-import sh.spinlock.higgins.host.connection.agent.JvmAgentConnection;
+import sh.spinlock.higgins.host.connection.JvmAgentConnection;
 
 public class JvmHostConnection extends HostConnection {
     private final JvmAgentConnection agentConnection;

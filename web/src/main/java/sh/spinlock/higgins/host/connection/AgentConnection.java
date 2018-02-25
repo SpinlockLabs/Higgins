@@ -1,19 +1,29 @@
-package sh.spinlock.higgins.host.connection.agent;
+package sh.spinlock.higgins.host.connection;
 
 import lombok.Getter;
 import lombok.Setter;
 import sh.spinlock.higgins.host.agent.Agent;
+import sh.spinlock.higgins.host.connection.protocol.ProtocolHandler;
 
 public abstract class AgentConnection {
     @Getter
-    private Agent agent;
+    private final Agent agent;
+
+    @Getter
+    private final ProtocolHandler protocolHandler;
 
     public AgentConnection(Agent agent) {
         this.agent = agent;
+        protocolHandler = new ProtocolHandler();
+        protocolHandler.setConnection(this);
     }
 
     public abstract void send(byte[] bytes);
-    public void receive(byte[] bytes) {}
+
+    public void receive(byte[] bytes) {
+        protocolHandler.handleIncoming(bytes);
+    }
+
     public void close() {}
 
     /**
