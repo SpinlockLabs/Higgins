@@ -7,10 +7,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import sh.spinlock.higgins.agent.connection.protocol.ProtocolConstants;
 import sh.spinlock.higgins.connection.protocol.MessageBuilder;
+import sh.spinlock.higgins.host.HigginsHost;
 import sh.spinlock.higgins.host.connection.AgentConnection;
 import sh.spinlock.higgins.util.MessageId;
 import sh.spinlock.higgins.connection.protocol.ProtocolRootMessage.RootMessage;
 import sh.spinlock.higgins.connection.protocol.ProtocolMessages.*;
+
+import java.util.UUID;
 
 import static sh.spinlock.higgins.agent.connection.protocol.ProtocolConstants.MessageIndex.*;
 
@@ -64,14 +67,21 @@ public class ProtocolHandler {
         LOG.debug("AuthMessage(password={},uuid_least={},uuid_most={})", authMessage.getPassword(),
                 authMessage.getUuidLeast(), authMessage.getUuidMost());
 
-        AckMessage ackMessage = AckMessage.newBuilder()
-                .setId(rootMessage.getId())
-                .build();
+        UUID agentUuid = new UUID(authMessage.getUuidMost(), authMessage.getUuidLeast());
+        boolean accepted = getConnection().getAgent().authenticate(agentUuid, authMessage.getPassword());
 
-        RootMessage ackMessageRoot = MessageBuilder.buildRootMessage(id.increment(),
-                ProtocolConstants.MessageIndex.ACK,
-                ackMessage.toByteArray());
-        getConnection().send(ackMessageRoot.toByteArray());
+        if (accepted) {
+            AckMessage ackMessage = AckMessage.newBuilder()
+                    .setId(rootMessage.getId())
+                    .build();
+
+            RootMessage ackMessageRoot = MessageBuilder.buildRootMessage(id.increment(),
+                    ProtocolConstants.MessageIndex.ACK,
+                    ackMessage.toByteArray());
+            getConnection().send(ackMessageRoot.toByteArray());
+        } else {
+            getConnection().close();
+        }
     }
 
     private void handleAgentInfo(RootMessage rootMessage) throws InvalidProtocolBufferException {

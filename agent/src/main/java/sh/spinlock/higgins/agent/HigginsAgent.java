@@ -8,12 +8,17 @@ import sh.spinlock.higgins.agent.connection.HostConnection;
 import sh.spinlock.higgins.agent.file.RootDirectory;
 
 import java.io.IOException;
+import java.util.UUID;
 
 public class HigginsAgent {
     private static final Logger LOG = LogManager.getLogger();
 
     @Getter
     private static HigginsAgent instance;
+
+    // TODO: Move this to a configuration class once available
+    @Getter
+    private UUID agentUuid;
 
     @Getter
     @Setter
@@ -23,6 +28,7 @@ public class HigginsAgent {
     private RootDirectory rootDirectory;
 
     public void start() {
+        agentUuid = UUID.randomUUID();
         rootDirectory = new RootDirectory("higgins-agent/");
 
         try {

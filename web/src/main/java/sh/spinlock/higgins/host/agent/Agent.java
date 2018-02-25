@@ -7,10 +7,20 @@ import sh.spinlock.higgins.connection.protocol.ProtocolMessages.HelloMessage;
 import sh.spinlock.higgins.connection.protocol.ProtocolRootMessage.RootMessage;
 import sh.spinlock.higgins.host.connection.AgentConnection;
 
+import java.util.UUID;
+
 public class Agent {
     @Getter
     @Setter
     private String name;
+
+    @Getter
+    @Setter
+    private UUID uuid;
+
+    @Getter
+    @Setter
+    private boolean authenticated;
 
     @Getter
     @Setter
@@ -20,6 +30,12 @@ public class Agent {
 
     public void disconnect() {
         getConnection().close();
+    }
+
+    public boolean authenticate(UUID agentUuid, String password) {
+        setName(agentUuid.toString());
+        // TODO: Check against password when ready
+        return true;
     }
 
     public void setReady() {

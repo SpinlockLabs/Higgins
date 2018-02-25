@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sh.spinlock.higgins.agent.HigginsAgent;
 import sh.spinlock.higgins.agent.connection.HostConnection;
 import sh.spinlock.higgins.agent.connection.info.AgentInfo;
 import sh.spinlock.higgins.agent.connection.info.InfoCollector;
@@ -19,6 +20,7 @@ import sh.spinlock.higgins.util.MessageId;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static sh.spinlock.higgins.agent.connection.protocol.ProtocolConstants.MessageIndex.*;
 
@@ -95,10 +97,12 @@ public class ProtocolHandler {
                     message.getProtocolVersion());
         }
 
+        UUID agentUuid = HigginsAgent.getInstance().getAgentUuid();
+
         AuthMessage.Builder authMessage = AuthMessage.newBuilder();
         authMessage.setPassword("somePassword"); // TODO
-        authMessage.setUuidLeast(0); // TODO
-        authMessage.setUuidMost(0); // TODO
+        authMessage.setUuidMost(agentUuid.getMostSignificantBits());
+        authMessage.setUuidLeast(agentUuid.getLeastSignificantBits());
 
         long msgId = id.increment();
         RootMessage replyMessage = MessageBuilder.buildRootMessage(msgId,
